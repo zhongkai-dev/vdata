@@ -1,2 +1,5 @@
 // This file helps Vercel understand the project structure
-module.exports = require('./server/src/server.js'); 
+const app = require('./server/src/server.js');
+
+// Export for Vercel serverless function
+module.exports = app; 
