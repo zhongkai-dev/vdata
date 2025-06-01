@@ -1,10 +1,15 @@
 {
-  "version": 2,
-  "buildCommand": "npm run build",
-  "installCommand": "npm run install-all",
-  "outputDirectory": "client/build",
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/server/src/server.js" },
-    { "source": "/(.*)", "destination": "/client/build/index.html" }
-  ]
+    {
+      "source": "/api/(.*)",
+      "destination": "/server/src/server.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": "client/build",
+  "framework": "create-react-app"
 } 

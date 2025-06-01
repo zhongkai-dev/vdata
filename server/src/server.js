@@ -26,7 +26,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: '*',
+  origin: process.env.NODE_ENV === 'production' ? [
+    'https://vdata-one.vercel.app',
+    'https://vdata-z-k.vercel.app',
+    /\.vercel\.app$/
+  ] : '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
@@ -37,13 +41,23 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Basic health check
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'ok', env: process.env.NODE_ENV });
+  res.status(200).json({ 
+    status: 'ok', 
+    env: process.env.NODE_ENV,
+    time: new Date().toISOString()
+  });
 });
 
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
+
+// Ensure correct content type for API responses
+app.use('/api', (req, res, next) => {
+  res.setHeader('Content-Type', 'application/json');
+  next();
+});
 
 // Serve static files from the React app when in production
 if (process.env.NODE_ENV === 'production') {
@@ -77,6 +91,11 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`Server running on port ${PORT}`);
   });
 }
+
+// Handle 404s for API routes
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ message: 'API endpoint not found' });
+});
 
 // For Vercel serverless functions
 module.exports = app; 
