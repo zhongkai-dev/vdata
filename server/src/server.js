@@ -59,14 +59,42 @@ app.get('/api/atlas-check', async (req, res) => {
     // Process the MongoDB URI
     let mongoURI = process.env.MONGO_URI || process.env.MONGODB_URI || '';
     
+    console.log('Atlas check requested, using URI:', mongoURI ? `${mongoURI.substring(0, 20)}...` : 'Not set');
+    
+    // Basic URI validation
+    if (!mongoURI || mongoURI.trim() === '') {
+      return res.status(400).json({
+        success: false,
+        error: 'MongoDB URI is not set in environment variables',
+        suggestions: [
+          'Set MONGO_URI environment variable in Vercel',
+          'Check for typos in the environment variable name'
+        ],
+        timestamp: new Date().toISOString()
+      });
+    }
+    
     // Add database name if not present
-    if (mongoURI.includes('mongodb+srv://') && !mongoURI.split('/')[3]) {
-      if (mongoURI.includes('/?')) {
-        mongoURI = mongoURI.replace('/?', '/vdata?');
-      } else if (mongoURI.endsWith('/')) {
-        mongoURI = `${mongoURI}vdata`;
-      } else {
-        mongoURI = `${mongoURI}/vdata`;
+    if (mongoURI.includes('mongodb+srv://')) {
+      let hasDatabase = false;
+      
+      // Check if there's a database name
+      const parts = mongoURI.split('@');
+      if (parts.length > 1) {
+        const pathParts = parts[1].split('/');
+        hasDatabase = pathParts.length > 1 && pathParts[1] && pathParts[1].length > 0 && !pathParts[1].startsWith('?');
+      }
+      
+      // Add database if missing
+      if (!hasDatabase) {
+        if (mongoURI.includes('/?')) {
+          mongoURI = mongoURI.replace('/?', '/vdata?');
+        } else if (mongoURI.endsWith('/')) {
+          mongoURI = `${mongoURI}vdata`;
+        } else {
+          mongoURI = `${mongoURI}/vdata`;
+        }
+        console.log('Added database name to URI:', mongoURI ? `${mongoURI.substring(0, 20)}...` : 'Not set');
       }
     }
     
@@ -74,20 +102,63 @@ app.get('/api/atlas-check', async (req, res) => {
     let uriInfo = {
       isAtlas: mongoURI.includes('mongodb+srv://'),
       hasCredentials: mongoURI.includes('@'),
-      hasDatabase: mongoURI.split('/').length > 3,
+      hasDatabase: false,
       hasParameters: mongoURI.includes('?'),
     };
     
-    if (uriInfo.hasCredentials && mongoURI.includes('@')) {
-      const host = mongoURI.split('@')[1].split('/')[0];
-      uriInfo.host = host;
+    // Try to extract host and database information
+    try {
+      if (uriInfo.hasCredentials && mongoURI.includes('@')) {
+        const parts = mongoURI.split('@');
+        if (parts.length > 1) {
+          const hostAndPath = parts[1].split('/');
+          uriInfo.host = hostAndPath[0];
+          
+          // Check for database name
+          if (hostAndPath.length > 1 && hostAndPath[1] && hostAndPath[1].length > 0 && !hostAndPath[1].startsWith('?')) {
+            uriInfo.hasDatabase = true;
+            uriInfo.database = hostAndPath[1].split('?')[0];
+          }
+        }
+      }
+    } catch (parseError) {
+      console.error('Error parsing MongoDB URI:', parseError);
+      // Continue with diagnostics even if parsing fails
     }
     
-    // Test basic connection
-    const directConnTest = await testConnection(mongoURI);
+    // Test basic connection (with timeout)
+    let directConnTest;
+    try {
+      directConnTest = await Promise.race([
+        testConnection(mongoURI),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Connection test timeout after 10s')), 10000)
+        )
+      ]);
+    } catch (err) {
+      directConnTest = {
+        success: false,
+        error: err.message,
+        code: err.code,
+        name: err.name
+      };
+    }
     
-    // Test network connectivity
-    const networkTest = await testAtlasConnectivity(mongoURI);
+    // Test network connectivity (with timeout)
+    let networkTest;
+    try {
+      networkTest = await Promise.race([
+        testAtlasConnectivity(mongoURI),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Network test timeout after 10s')), 10000)
+        )
+      ]);
+    } catch (err) {
+      networkTest = {
+        success: false,
+        error: err.message
+      };
+    }
     
     // Check Mongoose connection status
     const mongooseStatus = {
@@ -119,12 +190,12 @@ app.get('/api/atlas-check', async (req, res) => {
       }
     }
     
-    if (!networkTest.success) {
-      if (!networkTest.tests?.dnsLookup?.success) {
+    if (!networkTest || !networkTest.success) {
+      if (!networkTest || !networkTest.tests || !networkTest.tests.dnsLookup || !networkTest.tests.dnsLookup.success) {
         suggestions.push('DNS lookup failed. Check if the hostname is correct.');
       }
       
-      if (!networkTest.tests?.tcpConnection?.success) {
+      if (!networkTest || !networkTest.tests || !networkTest.tests.tcpConnection || !networkTest.tests.tcpConnection.success) {
         suggestions.push('TCP connection failed. This could be due to firewall restrictions or IP allowlist settings.');
       }
     }
@@ -133,18 +204,25 @@ app.get('/api/atlas-check', async (req, res) => {
       suggestions.push('MongoDB connection is not established. Try restarting the server.');
     }
     
-    res.status(200).json({
+    // Always add this suggestion if there are problems
+    if (suggestions.length > 0) {
+      suggestions.push('For MongoDB Atlas: Go to Network Access in Atlas dashboard and add current IP or 0.0.0.0/0 (allow from anywhere) for testing.');
+    }
+    
+    return res.status(200).json({
       uriInfo,
       directConnectionTest: directConnTest,
-      networkTest: networkTest,
+      networkTest,
       mongooseStatus,
       suggestions,
       timestamp: new Date().toISOString()
     });
   } catch (error) {
-    res.status(500).json({
+    console.error('Error in /api/atlas-check:', error);
+    return res.status(500).json({
       success: false,
       error: error.message,
+      stack: process.env.NODE_ENV === 'production' ? null : error.stack,
       timestamp: new Date().toISOString()
     });
   }
