@@ -4,9 +4,28 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     // Check for both environment variable names
-    const mongoURI = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/phone-number-generator';
+    let mongoURI = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/phone-number-generator';
     
-    console.log('Connecting to MongoDB with URI:', mongoURI.substring(0, 20) + '...');
+    // Ensure database name is specified in the URI
+    if (mongoURI.includes('mongodb+srv://') && !mongoURI.includes('mongodb+srv://data:data@cluster0.huzqoo4.mongodb.net/')) {
+      // If no database specified after the host, add it
+      if (mongoURI.includes('/?')) {
+        // Insert database name before parameters
+        mongoURI = mongoURI.replace('/?', '/vdata?');
+      } else if (mongoURI.endsWith('/')) {
+        // Add database name at the end
+        mongoURI = `${mongoURI}vdata`;
+      } else if (!mongoURI.split('/')[3]) {
+        // Add database name if not present
+        mongoURI = `${mongoURI}/vdata`;
+      }
+    }
+    
+    console.log('Connecting to MongoDB with URI format:', 
+      mongoURI.substring(0, mongoURI.indexOf('://') + 6) + 
+      '[username]:[password]@' + 
+      mongoURI.substring(mongoURI.indexOf('@') + 1, 30) + '...'
+    );
     
     // Set mongoose options
     mongoose.set('strictQuery', false); // Preparation for Mongoose 7
