@@ -9,6 +9,8 @@ const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const { testConnection } = require('./utils/dbTest');
+const { testAtlasConnectivity } = require('./utils/networkTest');
 
 // Create uploads directory if it doesn't exist
 try {
@@ -21,7 +23,9 @@ try {
 }
 
 // Connect to database
-connectDB();
+connectDB().catch(err => {
+  console.error('Initial DB connection failed:', err.message);
+});
 
 const app = express();
 
@@ -50,26 +54,38 @@ app.get('/api/health', (req, res) => {
 });
 
 // Debug endpoint to check MongoDB connection and environment variables
-app.get('/api/debug', (req, res) => {
+app.get('/api/debug', async (req, res) => {
+  // Get MongoDB URI
+  const mongoURI = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/phone-number-generator';
+  
   const envVars = {
     NODE_ENV: process.env.NODE_ENV,
-    MONGO_URI: process.env.MONGO_URI ? `${process.env.MONGO_URI.substring(0, 20)}...` : 'Not set',
-    MONGODB_URI: process.env.MONGODB_URI ? `${process.env.MONGODB_URI.substring(0, 20)}...` : 'Not set',
+    MONGO_URI: mongoURI ? `${mongoURI.substring(0, 20)}...` : 'Not set',
     PORT: process.env.PORT,
     JWT_SECRET: process.env.JWT_SECRET ? 'Set (hidden)' : 'Not set'
   };
 
   const dbState = {
-    connected: mongoose.connection.readyState === 1,
-    readyState: mongoose.connection.readyState,
-    host: mongoose.connection.host || 'Not connected',
-    name: mongoose.connection.name || 'Not connected',
+    mongoose_connected: mongoose.connection.readyState === 1,
+    mongoose_readyState: mongoose.connection.readyState,
+    mongoose_host: mongoose.connection.host || 'Not connected',
+    mongoose_name: mongoose.connection.name || 'Not connected',
   };
+  
+  // Test direct connection
+  const directTest = await testConnection(mongoURI);
+  
+  // Test network connectivity
+  const networkTest = await testAtlasConnectivity(mongoURI);
 
   res.status(200).json({
     environment: envVars,
     database: dbState,
-    message: 'This endpoint helps debug connection issues'
+    directTest,
+    networkTest,
+    message: 'This endpoint helps debug connection issues',
+    vercel: process.env.VERCEL === '1' ? 'Running on Vercel' : 'Not on Vercel',
+    timestamp: new Date().toISOString()
   });
 });
 
