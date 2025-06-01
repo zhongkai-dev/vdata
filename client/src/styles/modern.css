@@ -1,0 +1,1419 @@
+/* Import Poppins font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Modern UI with Glassmorphism Effects */
+:root {
+  --primary-color: #7c83f7;  /* Lighter purple */
+  --secondary-color: #5a60e8;
+  --accent-color: #c9cdff;
+  --success-color: #4adcb2;
+  --danger-color: #f76c6c;
+  --warning-color: #ffcf59;
+  --info-color: #58b5ff;
+  --light-color: #e9ebff;
+  --dark-color: #1f2937;
+  --glass-bg-admin: rgba(0, 0, 0, 0); /* Fully transparent for admin */
+  --glass-bg-user: rgba(0, 0, 0, 0); /* Now fully transparent for user too */
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --transition: all 0.3s ease;
+  --font-family: 'Poppins', 'Segoe UI', 'Roboto', sans-serif;
+  --text-primary: #e9ebff; /* Lighter text for better visibility */
+  --text-secondary: #d1d5ff; /* Lighter secondary text */
+  --text-muted: #b5bdff; /* Brighter muted text */
+  --admin-header-color: #9ca6ff; /* New color for admin headers */
+  --placeholder-color: #c7d0ff; /* Even lighter color for placeholders */
+  --blur-amount: 15px; /* Further increased blur amount */
+  --highlight-color: rgba(255, 255, 255, 0.2); /* New highlight color for inputs */
+}
+
+/* Apply Poppins to all text elements */
+body, h1, h2, h3, h4, h5, h6, p, span, div, button, input, select, textarea, label, a {
+  font-family: 'Poppins', sans-serif !important;
+  color: var(--light-color) !important; /* Ensure all text is light colored by default */
+}
+
+/* Adjust font weights for Poppins */
+h1, h2, h3, .form-label, .btn, .nav-link {
+  font-weight: 600;
+  color: var(--light-color) !important;
+}
+
+.form-control, .form-text, p, td, th {
+  font-weight: 400;
+  color: var(--light-color) !important;
+}
+
+.text-muted, small {
+  font-weight: 300;
+  color: var(--light-color) !important;
+}
+
+/* Override any Bootstrap dark colors */
+.text-dark, .text-body {
+  color: var(--light-color) !important;
+}
+
+/* Button text color override */
+.btn {
+  color: var(--light-color) !important;
+}
+
+/* Ensure form controls use light colors */
+.form-control, .form-select {
+  color: var(--light-color) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.form-label {
+  color: var(--accent-color) !important;
+}
+
+/* No scroll class for login and 404 pages */
+.no-scroll {
+  overflow: hidden !important;
+  height: 100% !important;
+  position: fixed !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Specific adjustment for form labels to look better with Poppins */
+.form-label {
+  letter-spacing: 0.2px;
+}
+
+/* Base Glass Effect - Apply to all glassy elements */
+.glass-effect,
+.glass-container,
+.modern-card,
+.modern-navbar,
+.admin-nav-item,
+.table,
+.modal-content,
+.alert,
+.form-control,
+.form-select,
+.input-group-text,
+.btn,
+.svg-stat-card,
+.stats-card,
+.admin-section,
+.admin-section.active {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Stats Cards with subtle background */
+.svg-stat-card,
+.stats-card {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border: 1px solid var(--glass-border);
+  border-radius: 0.5rem;
+  transition: var(--transition);
+}
+
+/* Stats Cards with SVG */
+.svg-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--card-shadow);
+}
+
+.svg-stat-card:hover,
+.stats-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Ensure all table elements are consistent */
+.table thead th,
+.table tbody tr,
+.table tbody td,
+.modern-table thead th,
+.modern-table tbody tr,
+.modern-table tbody td {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+}
+
+/* Special overrides for admin content with more blur */
+.admin-container .glass-container,
+.admin-container .modern-card,
+.admin-container .modern-table,
+.admin-container .svg-stat-card,
+.admin-container .alert,
+.admin-container .form-control,
+.admin-container .form-select,
+.admin-container .input-group-text,
+.admin-container .btn,
+.admin-container .stats-card,
+.admin-container .modern-phone-display,
+.admin-container .modal-content {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+}
+
+/* Make sure table has no background */
+.modern-table, 
+.table {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--glass-border);
+}
+
+/* General Styles */
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--dark-color);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Video Background - Only for Admin */
+.bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -10;
+  object-fit: cover;
+  object-position: center center;
+  opacity: 1; /* Original quality */
+}
+
+.admin-bg-overlay {
+  /* Empty styles - will be removed from DOM */
+}
+
+.user-bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(17, 25, 40, 0.3), rgba(35, 50, 80, 0.2));
+  z-index: -1;
+}
+
+/* Glassmorphism Container */
+.glass-container {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border: 1px solid var(--glass-border);
+  border-radius: 0.5rem;
+  box-shadow: var(--glass-shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Admin Container - For admin with video background */
+.admin-container {
+  position: relative;
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.admin-container h2 {
+  color: var(--admin-header-color);
+  font-weight: 600;
+}
+
+.admin-container .modern-card,
+.admin-container .stats-card,
+.admin-container .glass-container,
+.admin-container .modern-table,
+.admin-container .alert,
+.admin-container .form-control,
+.admin-container .form-select,
+.admin-container .btn {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+}
+
+/* User Container - Simpler style without video */
+.user-container {
+  position: relative;
+  padding: 1rem;
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: var(--dark-color);
+}
+
+/* Modern Nav */
+.modern-navbar {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  padding: 0.75rem 1rem;
+}
+
+.modern-navbar .navbar-brand {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.modern-navbar .nav-link {
+  color: var(--text-secondary);
+  margin: 0 0.5rem;
+  border-radius: 0.25rem;
+  transition: var(--transition);
+}
+
+.modern-navbar .nav-link:hover,
+.modern-navbar .nav-link.active {
+  color: var(--accent-color);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.modern-navbar .user-info {
+  color: var(--accent-color);
+  display: flex;
+  align-items: center;
+}
+
+.modern-navbar .user-icon {
+  background-color: var(--accent-color);
+  color: var(--dark-color);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+/* Add new admin menu item styles with animated underline */
+.header-nav .admin-menu-item {
+  background-color: transparent !important;
+  padding: 0.5rem 1rem;
+  color: var(--text-secondary) !important;
+  margin: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  border: none;
+  position: relative;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+.header-nav .admin-menu-item:hover {
+  color: var(--accent-color) !important;
+}
+
+.header-nav .admin-menu-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent-color);
+  transition: width 0.3s ease;
+}
+
+.header-nav .admin-menu-item:hover::after {
+  width: 50%;
+}
+
+.header-nav .admin-menu-item.active {
+  color: var(--accent-color) !important;
+  font-weight: 600;
+}
+
+.header-nav .admin-menu-item.active::after {
+  width: 100%;
+}
+
+/* Remove the existing admin-nav-item styles */
+.modern-navbar .admin-nav-item {
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none;
+  color: var(--text-secondary);
+  margin: 0 0.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.modern-navbar .admin-nav-item:hover {
+  background-color: transparent !important;
+  border-color: transparent;
+}
+
+.modern-navbar .admin-nav-item.active {
+  color: var(--accent-color);
+  background-color: transparent !important;
+  border-color: transparent;
+  font-weight: 600;
+}
+
+/* Header Nav Container */
+.header-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-right: auto;
+  gap: 10px;
+}
+
+/* Ensure proper text color in header nav */
+.header-nav .nav-link {
+  color: var(--text-secondary) !important;
+}
+
+.header-nav .nav-link:hover,
+.header-nav .nav-link.active {
+  color: var(--accent-color) !important;
+}
+
+/* Cards & Forms - More compact */
+.modern-card {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border: 1px solid var(--glass-border);
+  border-radius: 0.5rem;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: var(--transition);
+  margin-bottom: 1rem;
+}
+
+.user-container .modern-card {
+  font-size: 0.9rem;
+}
+
+.modern-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.modern-card .card-header {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  font-size: 0.9rem;
+}
+
+.admin-container .card-header {
+  color: var(--admin-header-color);
+}
+
+.user-container .modern-card .card-header {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--light-color);
+}
+
+.modern-card .card-body {
+  padding: 1.25rem;
+}
+
+.user-container .modern-card .card-body {
+  padding: 0.75rem;
+}
+
+.modern-card .card-footer {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--glass-border);
+  padding: 0.75rem 1.25rem;
+}
+
+.user-container .modern-card .card-footer {
+  padding: 0.5rem 0.75rem;
+}
+
+/* Enhanced form controls with lighter styling */
+.modern-form .form-control,
+.modern-form .input-group-text {
+  background-color: rgba(255, 255, 255, 0.12) !important; /* Lighter background */
+  border: 1px solid rgba(255, 255, 255, 0.25) !important; /* Lighter border */
+  color: var(--light-color) !important;
+  transition: var(--transition);
+}
+
+.modern-form .form-control::placeholder {
+  color: var(--placeholder-color) !important;
+  opacity: 0.9 !important; /* More visible placeholder */
+}
+
+.modern-form .form-control:focus {
+  background-color: rgba(255, 255, 255, 0.18) !important; /* Even lighter on focus */
+  box-shadow: 0 0 0 0.25rem rgba(201, 205, 255, 0.25) !important;
+  border-color: var(--accent-color) !important;
+}
+
+.modern-form .form-label {
+  color: var(--accent-color) !important; /* Brighter label color */
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.modern-form .form-text {
+  color: var(--text-secondary) !important; /* Lighter help text */
+  font-size: 0.875rem;
+}
+
+/* Specific styles for search section in assign users */
+.admin-section[class*='assign'] .form-control {
+  background-color: rgba(255, 255, 255, 0.15) !important; /* Lighter search box */
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.admin-section[class*='assign'] .form-control:focus {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Specific styles for search section headings and labels */
+.admin-section[class*='assign'] .form-label {
+  color: #ffcc80 !important; /* Warm orange/gold */
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.admin-section[class*='assign'] .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important; /* Simple white with opacity */
+  opacity: 1 !important;
+}
+
+.admin-section[class*='assign'] .input-group .form-control {
+  background-color: rgba(255, 255, 255, 0.08) !important; /* Very subtle background */
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.admin-section[class*='assign'] .text-muted.form-text {
+  color: #a5d6ff !important; /* Distinctive light blue */
+  font-size: 0.9rem;
+}
+
+.admin-section[class*='assign'] .text-muted.form-text .fas {
+  color: #a5d6ff !important; /* Match icon to text */
+}
+
+/* Search icon in label */
+.admin-section[class*='assign'] .form-label .fas {
+  color: #ffcc80 !important; /* Match icon to label */
+}
+
+/* Style for "Assign to All Users" checkbox */
+.form-check-label {
+  color: #c5e1a5 !important; /* Light green */
+  font-weight: 500;
+}
+
+.form-check-input:checked {
+  background-color: #c5e1a5 !important; /* Match with label */
+  border-color: #c5e1a5 !important;
+}
+
+/* Make search section label icon brighter */
+.admin-section[class*='assign'] .fas.fa-search {
+  color: #b5caff !important;
+}
+
+/* Apply blur to form controls - with lighter styling */
+.form-control, 
+.form-select, 
+.input-group-text {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: var(--light-color) !important;
+}
+
+/* Highlight outline for buttons */
+.btn-outline-secondary {
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+.btn-outline-secondary:hover {
+  background-color: rgba(201, 205, 255, 0.15) !important;
+  color: var(--light-color) !important;
+}
+
+/* Stats Cards with SVG */
+.svg-stat-card .svg-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg-stat-card .svg-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.svg-stat-card .stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.svg-stat-card .stat-title {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.svg-stat-card .stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.svg-stat-card .stat-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 0.25rem;
+}
+
+/* Buttons - More compact */
+.btn-modern-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--light-color);
+  border-radius: 0.375rem;
+  padding: 0.4rem 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+  font-size: 0.95rem;
+}
+
+.user-container .btn-modern-primary {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.75rem;
+}
+
+.btn-modern-primary:hover,
+.btn-modern-primary:focus {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+
+.btn-modern-secondary {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--glass-border);
+  color: var(--light-color);
+  border-radius: 0.375rem;
+  padding: 0.4rem 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+  font-size: 0.95rem;
+}
+
+.user-container .btn-modern-secondary {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.75rem;
+}
+
+.btn-modern-secondary:hover,
+.btn-modern-secondary:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Tables */
+.modern-table th,
+.modern-table td {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--glass-border);
+  color: var(--light-color);
+  font-size: 0.95rem;
+}
+
+.user-container .modern-table th,
+.user-container .modern-table td {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.modern-table thead th {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  color: var(--admin-header-color);
+  font-weight: 600;
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0.75rem 1.25rem;
+}
+
+.admin-container .modern-table thead th {
+  color: var(--admin-header-color);
+}
+
+.modern-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.modern-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+.table thead th {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  color: var(--admin-header-color);
+  font-weight: 600;
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0.75rem 1.25rem;
+}
+
+.table tbody tr {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.table tbody td {
+  background-color: transparent !important;
+  padding: 0.75rem 1.25rem;
+  color: var(--light-color);
+}
+
+.admin-container .modern-table,
+.admin-container .modern-table thead th,
+.admin-container .modern-table tbody tr,
+.admin-container .modern-table tbody td {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* User details simple display */
+.user-details-simple {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  color: var(--light-color);
+}
+
+.user-details-simple .user-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+}
+
+.user-details-simple .user-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.user-details-simple .user-info-item:last-child {
+  border-bottom: none;
+}
+
+.user-details-simple .info-label {
+  color: var(--text-muted);
+}
+
+.user-details-simple .info-value {
+  color: var(--light-color);
+  font-weight: 500;
+}
+
+/* Phone Numbers Display */
+.modern-phone-display {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border: 1px solid var(--glass-border);
+  border-radius: 0.375rem;
+  padding: 0.85rem;
+  font-family: 'Courier New', Courier, monospace;
+  max-height: 220px;
+  overflow-y: auto;
+  color: var(--light-color);
+  font-size: 0.95rem;
+}
+
+.user-container .modern-phone-display {
+  padding: 0.5rem;
+  max-height: 180px;
+  font-size: 0.85rem;
+}
+
+.modern-phone-display div {
+  padding: 0.2rem 0.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-container .modern-phone-display div {
+  padding: 0.15rem 0.3rem;
+}
+
+.modern-phone-display div:last-child {
+  border-bottom: none;
+}
+
+/* Stats Card */
+.stats-card {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border: 1px solid var(--glass-border);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  transition: var(--transition);
+}
+
+.stats-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--glass-shadow);
+}
+
+.stats-card .stats-title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.stats-card .stats-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--light-color);
+}
+
+.stats-card .stats-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 0.4rem;
+  margin-bottom: 0.85rem;
+  font-size: 1.1rem;
+}
+
+/* Login Page - More compact */
+.modern-login-container {
+  max-width: 420px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  margin: 0;
+  z-index: 10;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.login-header h2 {
+  color: var(--accent-color);
+  font-weight: 700;
+  font-size: 1.85rem;
+  margin-bottom: 10px;
+}
+
+.login-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* User Icon */
+.user-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--dark-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+.user-container .user-icon {
+  width: 30px !important;
+  height: 30px !important;
+  font-size: 0.95rem !important;
+}
+
+/* Text colors */
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* User profile text sizes */
+.user-container h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem !important;
+  color: var(--light-color);
+}
+
+.user-container .small {
+  font-size: 0.75rem;
+}
+
+.user-container .fs-4 {
+  font-size: 1.2rem !important;
+}
+
+/* Color overrides for better visibility */
+.text-primary {
+  color: #a5b4fd !important; /* Lighter primary color */
+}
+
+.text-warning {
+  color: #fcd34d !important; /* Lighter warning color */
+}
+
+.text-success {
+  color: #34d399 !important; /* Lighter success color */
+}
+
+.btn-primary {
+  background-color: var(--primary-color) !important;
+  border-color: var(--secondary-color) !important;
+}
+
+.btn-sm {
+  font-size: 0.8rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+/* Mobile Optimization for User Container */
+@media (max-width: 768px) {
+  .user-container {
+    padding: 0.75rem;
+  }
+  
+  .user-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .user-container .modern-card {
+    margin-bottom: 0.75rem;
+  }
+  
+  .user-container .card-body {
+    padding: 0.5rem;
+  }
+  
+  .user-container .btn {
+    width: 100%;
+  }
+}
+
+/* Only apply radial gradient to admin container */
+.admin-container::before {
+  display: none; /* Hide the radial gradient overlay */
+}
+
+.user-container::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 80%),
+    radial-gradient(circle at bottom left, rgba(79, 70, 229, 0.08), transparent 80%);
+  z-index: -1;
+}
+
+/* Modal Styles - Updated with Transparency */
+.modal-content {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: var(--glass-shadow) !important;
+}
+
+.modal-backdrop {
+  opacity: 0.5 !important;
+  background-color: rgba(13, 16, 33, 0.7) !important;
+}
+
+.modal-backdrop-dark {
+  background-color: rgba(13, 16, 33, 0.85) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--glass-border) !important;
+  padding: 1rem 1.5rem !important;
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+.modal-header .modal-title {
+  color: var(--accent-color) !important;
+  font-weight: 600 !important;
+  font-size: 1.25rem !important;
+}
+
+.modal-header .btn-close {
+  color: var(--light-color) !important;
+  opacity: 0.8 !important;
+  text-shadow: none !important;
+  filter: brightness(2) !important;
+}
+
+.modal-body {
+  padding: 1.5rem !important;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--glass-border) !important;
+  padding: 1rem 1.5rem !important;
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Animated Modal */
+.modal.fade .modal-dialog {
+  transform: scale(0.95) !important;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease !important;
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1) !important;
+  opacity: 1;
+}
+
+/* Fixed positioning for modals */
+.modal-dialog-centered {
+  display: flex !important;
+  align-items: center !important;
+  min-height: calc(100% - 3.5rem) !important;
+}
+
+/* Glass Container Styles */
+.glass-container {
+  background-color: transparent !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border: 1px solid var(--glass-border);
+  border-radius: 0.5rem;
+  box-shadow: var(--glass-shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Admin Navigation */
+.admin-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 10px;
+}
+
+.admin-nav-item {
+  padding: 0.6rem 1rem;
+  color: var(--text-secondary);
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+}
+
+.admin-nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.admin-nav-item.active {
+  color: var(--accent-color);
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--glass-border);
+  font-weight: 600;
+}
+
+.admin-section {
+  display: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  background: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.admin-section.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeIn 0.4s ease;
+  background: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.admin-section-heading {
+  color: var(--admin-header-color);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--glass-border);
+  font-size: 1.1rem;
+}
+
+/* Apply blur effect to all alerts */
+.alert {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--light-color) !important;
+}
+
+.alert-success {
+  border-left: 3px solid var(--success-color) !important;
+}
+
+.alert-danger {
+  border-left: 3px solid var(--danger-color) !important;
+}
+
+.alert-warning {
+  border-left: 3px solid var(--warning-color) !important;
+}
+
+.alert-info {
+  border-left: 3px solid var(--info-color) !important;
+}
+
+/* Button blur effects */
+.btn {
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+}
+
+/* Header Navigation */
+.header-nav {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  gap: 15px;
+}
+
+/* Modal parts with subtle background */
+.modal-header,
+.modal-body,
+.modal-footer {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(var(--blur-amount)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
+}
+
+/* Direct selectors for the search section elements */
+.card-body .form-label {
+  color: #ffcc80 !important; /* Warm orange/gold */
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  font-size: 1.1rem;
+}
+
+.card-body .form-label .fas.fa-search {
+  color: #ffcc80 !important; /* Match icon to label */
+}
+
+.card-body .form-control {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+}
+
+.card-body .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.75) !important; /* Simple white with opacity */
+  opacity: 1 !important;
+}
+
+.card-body .text-muted.form-text {
+  color: #a5d6ff !important; /* Distinctive light blue */
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.card-body .text-muted.form-text .fas.fa-info-circle {
+  color: #a5d6ff !important; /* Match icon to text */
+}
+
+/* Extremely specific selector as a last resort */
+div.card-body > div.mb-3 > label.form-label {
+  color: #ffcc80 !important;
+}
+
+div.card-body > div.mb-3 > small.text-muted.form-text {
+  color: #a5d6ff !important;
+}
+
+/* Reset styles for all text-muted to prevent Bootstrap override */
+.text-muted {
+  color: #a5d6ff !important;
+}
+
+/* Force-override form-text color with !important */
+.form-text, small.form-text, .form-text.text-muted {
+  color: #a5d6ff !important;
+}
+
+/* Force colors with higher specificity selectors */
+.mb-3 > .form-label {
+  color: #ffcc80 !important;
+}
+
+.mb-3 > .form-text {
+  color: #a5d6ff !important;
+}
+
+/* Modern Card Hover */
+.modern-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* No hover effect for user list cards */
+.modern-card.no-hover:hover {
+  transform: none !important;
+  box-shadow: var(--card-shadow) !important;
+}
+
+/* Pagination controls - ensure horizontal layout */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row !important;
+  gap: 10px;
+}
+
+.pagination-controls .btn {
+  flex-shrink: 0;
+  min-width: auto;
+}
+
+.pagination-controls span {
+  white-space: nowrap;
+}
+
+.modern-card .card-header {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  font-size: 0.9rem;
+}
+
+/* Not Found Page Styling */
+.not-found-icon {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: rgba(255, 207, 89, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  border: 2px solid rgba(255, 207, 89, 0.6);
+  box-shadow: 0 0 20px rgba(255, 207, 89, 0.3);
+}
+
+.not-found-icon i {
+  color: #FFD54F !important;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.not-found-icon:hover {
+  transform: scale(1.05);
+  transition: var(--transition);
+  box-shadow: 0 0 25px rgba(255, 207, 89, 0.5);
+}
+
+/* Full page container for centered content */
+.full-page-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+/* Upload Sections */
+.upload-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.upload-section h3 {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.upload-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(124, 131, 247, 0.15);
+  margin-right: 0.75rem;
+  font-size: 1.2rem;
+  color: #7c83f7;
+}
+
+/* Admin Section Transitions */
+.admin-section {
+  display: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  background: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.admin-section.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeIn 0.4s ease;
+  background: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Make all elements more transparent */
+.col, .row, div, section {
+  background-color: transparent !important;
+}
+
+/* Custom Select Dropdown Styling */
+.custom-select-container {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select {
+  color: var(--light-color);
+  transition: all 0.2s ease;
+}
+
+.custom-select:hover {
+  background-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+.custom-select-dropdown {
+  transform: translateY(-10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+.custom-select-dropdown.show {
+  display: block !important;
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.custom-select-option {
+  color: #8A6FE8 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.custom-select-option:last-child {
+  border-bottom: none;
+} 

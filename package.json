@@ -1,0 +1,26 @@
+{
+  "name": "vdata",
+  "version": "1.0.0",
+  "description": "Data Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/src/server.js",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm run install-all && cd client && npm run build",
+    "vercel-build": "npm run install-all && cd client && npm run build",
+    "deploy": "npm run build && NODE_ENV=production npm start",
+    "deploy-win": "npm run build && set NODE_ENV=production && npm start",
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=14.x"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+} 
