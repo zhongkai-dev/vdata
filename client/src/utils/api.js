@@ -1,56 +1,44 @@
-import axios from 'axios';
+import axiosInstance from './axiosConfig';
 
 // Create axios instance with auth token
-const createAuthAxios = () => {
+const getAuthHeaders = () => {
   const user = JSON.parse(localStorage.getItem('user'));
-  
-  const authAxios = axios.create({
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: user ? `Bearer ${user.token}` : '',
-    },
-  });
-  
-  return authAxios;
+  return {
+    Authorization: user ? `Bearer ${user.token}` : '',
+  };
 };
 
 // Admin API functions
 export const createUser = async (userData) => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.post('/api/users', userData);
+  const response = await axiosInstance.post('/api/users', userData, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const getUsers = async () => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.get('/api/users');
+  const response = await axiosInstance.get('/api/users', { headers: getAuthHeaders() });
   return response.data;
 };
 
 // New function to delete a single user
 export const deleteUser = async (userId) => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.delete(`/api/admin/delete-user/${userId}`);
+  const response = await axiosInstance.delete(`/api/admin/delete-user/${userId}`, { headers: getAuthHeaders() });
   return response.data;
 };
 
 // New function to delete multiple users
 export const deleteMultipleUsers = async (userIds) => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.post('/api/admin/delete-users', { userIds });
+  const response = await axiosInstance.post('/api/admin/delete-users', { userIds }, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const uploadPhoneNumbers = async (numbers) => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.post('/api/admin/upload-numbers', { numbers });
+  const response = await axiosInstance.post('/api/admin/upload-numbers', { numbers }, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const getPhoneNumbersCount = async () => {
   try {
-    const authAxios = createAuthAxios();
-    const response = await authAxios.get('/api/admin/phone-numbers/count');
+    const response = await axiosInstance.get('/api/admin/phone-numbers/count', { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error fetching phone numbers count:', error);
@@ -59,44 +47,36 @@ export const getPhoneNumbersCount = async () => {
 };
 
 export const assignPhoneNumbersToUser = async (userId, count) => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.post('/api/admin/assign-numbers', { userId, count });
+  const response = await axiosInstance.post('/api/admin/assign-numbers', { userId, count }, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const clearAllPhoneNumbers = async () => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.delete('/api/admin/clear-numbers');
+  const response = await axiosInstance.delete('/api/admin/clear-numbers', { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const clearUsedPhoneNumbers = async () => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.delete('/api/admin/clear-used-numbers');
+  const response = await axiosInstance.delete('/api/admin/clear-used-numbers', { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const clearAssignedPhoneNumbers = async () => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.delete('/api/admin/clear-assigned-numbers');
+  const response = await axiosInstance.delete('/api/admin/clear-assigned-numbers', { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const clearTotalPhoneNumbers = async () => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.delete('/api/admin/clear-total-numbers');
+  const response = await axiosInstance.delete('/api/admin/clear-total-numbers', { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const clearAllUserAssignments = async () => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.delete('/api/admin/clear-assignments');
+  const response = await axiosInstance.delete('/api/admin/clear-assignments', { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const bulkCreateUsers = async (file) => {
-  const authAxios = createAuthAxios();
-  
   // Create form data for file upload
   const formData = new FormData();
   formData.append('file', file);
@@ -105,27 +85,24 @@ export const bulkCreateUsers = async (file) => {
   const config = {
     headers: {
       'Content-Type': 'multipart/form-data',
-      Authorization: authAxios.defaults.headers.Authorization
+      ...getAuthHeaders()
     }
   };
   
-  const response = await axios.post('/api/admin/bulk-create-users', formData, config);
+  const response = await axiosInstance.post('/api/admin/bulk-create-users', formData, config);
   return response.data;
 };
 
 // User API functions
 export const getUserProfile = async () => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.get('/api/users/profile');
+  const response = await axiosInstance.get('/api/users/profile', { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const generatePhoneNumbers = async (count) => {
   try {
-    const authAxios = createAuthAxios();
-    
     const requestData = { count };
-    const response = await authAxios.post('/api/users/generate-numbers', requestData);
+    const response = await axiosInstance.post('/api/users/generate-numbers', requestData, { headers: getAuthHeaders() });
     
     // Remove plus signs from the phone numbers if they exist
     if (response.data.phoneNumbers) {
@@ -141,8 +118,7 @@ export const generatePhoneNumbers = async (count) => {
 
 export const exportUnusedPhoneNumbers = async () => {
   try {
-    const authAxios = createAuthAxios();
-    const response = await authAxios.get('/api/admin/export-unused-numbers');
+    const response = await axiosInstance.get('/api/admin/export-unused-numbers', { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error exporting unused phone numbers:', error);
@@ -151,7 +127,6 @@ export const exportUnusedPhoneNumbers = async () => {
 };
 
 export const bulkAssignToAllUsers = async (countPerUser) => {
-  const authAxios = createAuthAxios();
-  const response = await authAxios.post('/api/admin/bulk-assign-to-all', { countPerUser });
+  const response = await axiosInstance.post('/api/admin/bulk-assign-to-all', { countPerUser }, { headers: getAuthHeaders() });
   return response.data;
 }; 
